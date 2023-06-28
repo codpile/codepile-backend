@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+// datasource db {
+//   provider     = "postgresql"
+//   url          = env("DATABASE_URL")
+//   relationMode = "prisma"
+// }
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model User {
+  userIndex            Int       @unique @default(autoincrement())
+  userId               String    @id @default(uuid())
+  userName             String    @db.VarChar(255)
+  email                String    @unique
+  password             String    @db.VarChar(255)
+  imageUrl             String?   @db.VarChar(255)
+  imageName            String?   @db.VarChar(255)
+  createdAt            DateTime  @default(now())
+  updateAt             DateTime? @updatedAt
+  sender               Chat[]    @relation("sender")
+  recipient            Chat[]    @relation("recipient")
+  passwordResetToken   String?
+  passwordResetExpires DateTime?
+}
+
+model Chat {
+  messageIndex Int     @unique @default(autoincrement())
+  messageId    String  @id @default(uuid())
+  sender       User    @relation("sender", fields: [senderId], references: [userId])
+  senderId     String
+  recipient    User    @relation("recipient", fields: [recipientId], references: [userId])
+  recipientId  String
+  chatRoomId   String
+  date         String
+  message      String  @db.VarChar(300)
+  isDelivered  Boolean @default(false)
+  isRead       Boolean @default(false)
+
+  @@index([senderId])
+  @@index([recipientId])
+}
+
+// IMPORTANT COMMNANDS 
+
+// INITIALIZE PRISMA
+// npx prisma init --datasource-provider postgresql
+// npx prisma init --datasource-provider mysql
+
+// APPLY CHANGES TO ACTUAL DATABASE 
+// npx prisma migrate dev --name test1
+
+// GENERATE THE CLIENT TO INTERACT WITH THE DATABASE
+// npx prisma generate
+
+// TO EXPLORE AND MANUPLATE DATA USE PRISMA STUDIO
+// npx prisma studio
