@@ -23,7 +23,7 @@ CREATE TABLE `Student` (
     `studentId` VARCHAR(191) NOT NULL,
     `addedById` VARCHAR(255) NOT NULL,
     `firstName` VARCHAR(255) NOT NULL,
-    `LastName` VARCHAR(255) NOT NULL,
+    `lastName` VARCHAR(255) NOT NULL,
     `gender` VARCHAR(255) NOT NULL,
     `age` INTEGER NOT NULL,
     `district` VARCHAR(255) NOT NULL,

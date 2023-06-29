@@ -36,7 +36,7 @@ model Student {
   addedBy      User         @relation(fields: [addedById], references: [userId])
   addedById    String       @db.VarChar(255)
   firstName    String       @db.VarChar(255)
-  LastName     String       @db.VarChar(255)
+  lastName     String       @db.VarChar(255)
   gender       String       @db.VarChar(255)
   age          Int
   district     String       @db.VarChar(255)
@@ -84,7 +84,7 @@ model Prediction {
 // npx prisma init --datasource-provider mysql
 
 // APPLY CHANGES TO ACTUAL DATABASE 
-// npx prisma migrate dev --name test1
+// npx prisma migrate dev --name test
 
 // GENERATE THE CLIENT TO INTERACT WITH THE DATABASE
 // npx prisma generate

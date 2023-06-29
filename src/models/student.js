@@ -1,16 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-// studentId    String       @id @default(uuid())
-// addedBy      User         @relation(fields: [addedById], references: [userId])
-// addedById    String       @db.VarChar(255)
-// firstName    String       @db.VarChar(255)
-// LastName     String       @db.VarChar(255)
-// gender       String       @db.VarChar(255)
-// age          Int
-// district     String       @db.VarChar(255)
-// region       String       @db.VarChar(255)
-
 const Student = {};
 const student = prisma.student;
 
@@ -21,7 +11,7 @@ Student.create = async (studentObj) => {
       studentIndex: true,
       studentId: true,
       firstName: true,
-      LastName: true,
+      lastName: true,
       gender: true,
       age: true,
     },
@@ -58,7 +48,7 @@ Student.update = async (studentId, studentObj) => {
       studentIndex: true,
       studentId: true,
       firstName: true,
-      LastName: true,
+      lastName: true,
       gender: true,
       age: true,
     },
