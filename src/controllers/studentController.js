@@ -17,4 +17,15 @@ const addStudent = asyncHandler(async (req, res, next) => {
   });
 });
 
-module.exports = { addStudent };
+const getStudent = asyncHandler(async (req, res, next) => {
+  const studentId = req.params.studentId;
+
+  if (!studentId) return next(new AppError("Please provide a student id", 400));
+  const student = await Student.findById(studentId);
+  res.status(201).json({
+    status: "success",
+    data: student,
+  });
+});
+
+module.exports = { addStudent, getStudent };
