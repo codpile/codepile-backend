@@ -15,36 +15,66 @@ datasource db {
 }
 
 model User {
-  userIndex            Int       @unique @default(autoincrement())
-  userId               String    @id @default(uuid())
-  userName             String    @db.VarChar(255)
-  email                String    @unique
-  password             String    @db.VarChar(255)
-  imageUrl             String?   @db.VarChar(255)
-  imageName            String?   @db.VarChar(255)
-  createdAt            DateTime  @default(now())
-  updateAt             DateTime? @updatedAt
-  sender               Chat[]    @relation("sender")
-  recipient            Chat[]    @relation("recipient")
-  passwordResetToken   String?
+  userIndex            Int          @unique @default(autoincrement())
+  userId               String       @id @default(uuid())
+  userName             String       @db.VarChar(255)
+  email                String       @unique
+  password             String       @db.VarChar(255)
+  imageUrl             String?      @db.VarChar(255)
+  imagePath            String?      @db.VarChar(255)
+  createdAt            DateTime     @default(now())
+  updateAt             DateTime?    @updatedAt
+  student              Student[]
+  prediction           Prediction[]
+  passwordResetToken   String?      @db.VarChar(255)
   passwordResetExpires DateTime?
 }
 
-model Chat {
-  messageIndex Int     @unique @default(autoincrement())
-  messageId    String  @id @default(uuid())
-  sender       User    @relation("sender", fields: [senderId], references: [userId])
-  senderId     String
-  recipient    User    @relation("recipient", fields: [recipientId], references: [userId])
-  recipientId  String
-  chatRoomId   String
-  date         String
-  message      String  @db.VarChar(300)
-  isDelivered  Boolean @default(false)
-  isRead       Boolean @default(false)
+model Student {
+  studentIndex Int          @unique @default(autoincrement())
+  studentId    String       @id @default(uuid())
+  addedBy      User         @relation(fields: [addedById], references: [userId])
+  addedById    String       @db.VarChar(255)
+  firstName    String       @db.VarChar(255)
+  LastName     String       @db.VarChar(255)
+  gender       String       @db.VarChar(255)
+  age          Int
+  district     String       @db.VarChar(255)
+  region       String       @db.VarChar(255)
+  prediction   Prediction[]
+  createdAt    DateTime     @default(now())
+  updateAt     DateTime?    @updatedAt
 
-  @@index([senderId])
-  @@index([recipientId])
+  @@index([addedById])
+}
+
+model Subject {
+  subjectIndex Int          @unique @default(autoincrement())
+  subjectId    String       @id @default(uuid())
+  subjectName  String       @db.VarChar(255)
+  prediction   Prediction[]
+  createdAt    DateTime     @default(now())
+  updateAt     DateTime?    @updatedAt
+}
+
+model Prediction {
+  predictionIndex  Int       @unique @default(autoincrement())
+  predictionId     String    @id @default(uuid())
+  predictedBy      User      @relation(fields: [predictedById], references: [userId])
+  predictedById    String    @db.VarChar(255)
+  student          Student   @relation(fields: [studentId], references: [studentId])
+  studentId        String    @db.VarChar(255)
+  subject          Subject   @relation(fields: [SubjectId], references: [subjectId])
+  SubjectId        String    @db.VarChar(255)
+  previousExamMark Int
+  predictedMark    Int
+  remark           String    @db.VarChar(500)
+  createdAt        DateTime  @default(now())
+  updateAt         DateTime? @updatedAt
+
+  @@index([predictedById])
+  @@index([studentId])
+  @@index([SubjectId])
 }
 
 // IMPORTANT COMMNANDS 
