@@ -64,7 +64,7 @@ Student.update = async (studentId, studentObj) => {
 Student.delete = async (studentId) => {
   return await student.delete({
     where: {
-      studentId: { equals: studentId },
+      studentId: studentId,
     },
   });
 };

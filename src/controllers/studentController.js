@@ -14,6 +14,7 @@ const addStudent = asyncHandler(async (req, res, next) => {
   res.status(201).json({
     status: "success",
     data: newStudent,
+    message: "Student added successfully",
   });
 });
 
@@ -22,6 +23,9 @@ const getStudent = asyncHandler(async (req, res, next) => {
 
   if (!studentId) return next(new AppError("Please provide a student id", 400));
   const student = await Student.findById(studentId);
+  if (!student) {
+    return next(new AppError(`No student with id ${studentId} is found!`, 404));
+  }
   res.status(200).json({
     status: "success",
     data: student,
@@ -40,7 +44,19 @@ const updateStudent = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     status: "success",
     data: updatedStudent,
+    message: "Student updated successfully",
   });
 });
 
-module.exports = { addStudent, getStudent, updateStudent };
+const deleteStudent = asyncHandler(async (req, res, next) => {
+  const studentId = req.params.studentId;
+  if (!studentId) return next(new AppError("Please provide a student id", 400));
+  await Student.delete(studentId);
+
+  res.status(200).json({
+    status: "success",
+    message: "Student deleted successfully",
+  });
+});
+
+module.exports = { addStudent, getStudent, updateStudent, deleteStudent };
