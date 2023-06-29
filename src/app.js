@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const userRoutes = require("./routes/userRoutes");
+const studentRoutes = require("./routes/studentRoutes");
 const { errorHandler } = require("./controllers/errorController");
 const app = express();
 
@@ -17,6 +18,7 @@ if (process.env.NODE_ENV === "production") {
 app.use(express.json());
 
 app.use("/api/users", userRoutes);
+app.use("/api/students", studentRoutes);
 app.use(errorHandler);
 
 app.use("*", (req, res) => {
