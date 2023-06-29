@@ -32,6 +32,14 @@ const getStudent = asyncHandler(async (req, res, next) => {
   });
 });
 
+const getAllStudents = asyncHandler(async (req, res, next) => {
+  const students = await Student.findAll();
+  res.status(200).json({
+    status: "success",
+    data: students,
+  });
+});
+
 const updateStudent = asyncHandler(async (req, res, next) => {
   const studentId = req.params.studentId;
   const { firstName, LastName, gender, age, district, region } = req.body;
@@ -59,4 +67,10 @@ const deleteStudent = asyncHandler(async (req, res, next) => {
   });
 });
 
-module.exports = { addStudent, getStudent, updateStudent, deleteStudent };
+module.exports = {
+  addStudent,
+  getStudent,
+  updateStudent,
+  deleteStudent,
+  getAllStudents,
+};

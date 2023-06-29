@@ -44,6 +44,10 @@ Student.findByAddedBy = async (addedById) => {
   });
 };
 
+Student.findAll = async () => {
+  return await student.findMany({});
+};
+
 Student.update = async (studentId, studentObj) => {
   return await student.update({
     where: {
