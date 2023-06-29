@@ -44,10 +44,10 @@ Student.findByAddedBy = async (addedById) => {
   });
 };
 
-Student.update = async (studentObj) => {
+Student.update = async (studentId, studentObj) => {
   return await student.update({
     where: {
-      studentId: studentObj.studentId,
+      studentId: studentId,
     },
     data: studentObj,
     select: {
