@@ -37,7 +37,7 @@ Student.findById = async (studentId) => {
 };
 
 Student.findByAddedBy = async (addedById) => {
-  return await student.findFirst({
+  return await student.findMany({
     where: {
       addedById: { equals: addedById },
     },
