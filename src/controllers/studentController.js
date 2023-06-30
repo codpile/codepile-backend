@@ -35,7 +35,7 @@ const getStudent = asyncHandler(async (req, res, next) => {
 });
 
 const getStudentsByUser = asyncHandler(async (req, res, next) => {
-  const addedById = req.body.addedById;
+  const addedById = req.params.addedById;
   if (!addedById) return next(new AppError("Please provide user id", 400));
 
   const students = await Student.findByAddedBy(addedById);
