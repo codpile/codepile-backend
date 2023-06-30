@@ -3,6 +3,8 @@ const cors = require("cors");
 const userRoutes = require("./routes/userRoutes");
 const studentRoutes = require("./routes/studentRoutes");
 const { errorHandler } = require("./controllers/errorController");
+const logger = require("morgan");
+
 const app = express();
 
 let url;
@@ -16,6 +18,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 app.use(express.json());
+app.use(logger("dev"));
 
 app.use("/api/users", userRoutes);
 app.use("/api/students", studentRoutes);
