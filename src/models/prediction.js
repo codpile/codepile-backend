@@ -30,7 +30,7 @@ Prediction.findById = async (predictionId) => {
 };
 
 Prediction.findByStudent = async (studentId) => {
-  return await prediction.findFirst({
+  return await prediction.findMany({
     where: {
       studentId: { equals: studentId },
     },

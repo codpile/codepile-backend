@@ -46,7 +46,7 @@ const getPredictionsByStudent = asyncHandler(async (req, res, next) => {
   const studentId = req.params.studentId;
   if (!studentId) return next(new AppError("Please a student id!", 400));
   const predictions = await Prediction.findByStudent(studentId);
-  if (!predictions) {
+  if (!predictions[0]) {
     return next(new AppError("No predictions are found for this student", 404));
   }
   res.status(201).json({
@@ -60,7 +60,8 @@ const getPredictionsByPredictedBy = asyncHandler(async (req, res, next) => {
   const predictedById = req.params.predictedById;
   if (!predictedById) return next(new AppError("Please a student id!", 400));
   const predictions = await Prediction.findByPredictedBy(predictedById);
-  if (!predictions) {
+
+  if (!predictions[0]) {
     return next(new AppError("No predictions are found for this user!", 404));
   }
   res.status(201).json({
