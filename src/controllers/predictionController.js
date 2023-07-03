@@ -42,4 +42,18 @@ const makePrediction = asyncHandler(async (req, res, next) => {
   });
 });
 
-module.exports = { makePrediction };
+const getPredictionsByStudent = asyncHandler(async (req, res, next) => {
+  const studentId = req.params.studentId;
+  if (!studentId) return next(new AppError("Please a student id!", 400));
+  const predictions = await Prediction.findByStudent(studentId);
+  if (!predictions) {
+    return next(new AppError("No prediction is found for this student"));
+  }
+  res.status(201).json({
+    status: "success",
+    data: predictions,
+    message: "Student added successfully",
+  });
+});
+
+module.exports = { makePrediction, getPredictionsByStudent };
