@@ -3,6 +3,7 @@ const cors = require("cors");
 const userRoutes = require("./routes/userRoutes");
 const studentRoutes = require("./routes/studentRoutes");
 const subjectRoutes = require("./routes/subjectRoutes");
+const predictionRoutes = require("./routes/predictionRoutes");
 const { errorHandler } = require("./controllers/errorController");
 const logger = require("morgan");
 
@@ -24,6 +25,7 @@ app.use(logger("dev"));
 app.use("/api/users", userRoutes);
 app.use("/api/students", studentRoutes);
 app.use("/api/subjects", subjectRoutes);
+app.use("/api/predictions", predictionRoutes);
 app.use(errorHandler);
 
 app.use("*", (req, res) => {

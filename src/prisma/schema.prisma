@@ -57,6 +57,7 @@ model Subject {
   updateAt     DateTime?    @updatedAt
 }
 
+// TODO: add attendance column
 model Prediction {
   predictionIndex  Int       @unique @default(autoincrement())
   predictionId     String    @id @default(uuid())
@@ -64,17 +65,18 @@ model Prediction {
   predictedById    String    @db.VarChar(255)
   student          Student   @relation(fields: [studentId], references: [studentId])
   studentId        String    @db.VarChar(255)
-  subject          Subject   @relation(fields: [SubjectId], references: [subjectId])
-  SubjectId        String    @db.VarChar(255)
+  subject          Subject   @relation(fields: [subjectId], references: [subjectId])
+  subjectId        String    @db.VarChar(255)
   previousExamMark Int
   predictedMark    Int
-  remark           String    @db.VarChar(500)
+  attendance       Int
+  remark           String    @db.VarChar(1500)
   createdAt        DateTime  @default(now())
   updateAt         DateTime? @updatedAt
 
   @@index([predictedById])
   @@index([studentId])
-  @@index([SubjectId])
+  @@index([subjectId])
 }
 
 // IMPORTANT COMMNANDS 
