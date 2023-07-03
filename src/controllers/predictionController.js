@@ -47,13 +47,31 @@ const getPredictionsByStudent = asyncHandler(async (req, res, next) => {
   if (!studentId) return next(new AppError("Please a student id!", 400));
   const predictions = await Prediction.findByStudent(studentId);
   if (!predictions) {
-    return next(new AppError("No prediction is found for this student"));
+    return next(new AppError("No predictions are found for this student", 404));
   }
   res.status(201).json({
     status: "success",
     data: predictions,
-    message: "Student added successfully",
+    message: "fetched  successfully",
   });
 });
 
-module.exports = { makePrediction, getPredictionsByStudent };
+const getPredictionsByPredictedBy = asyncHandler(async (req, res, next) => {
+  const predictedById = req.params.predictedById;
+  if (!predictedById) return next(new AppError("Please a student id!", 400));
+  const predictions = await Prediction.findByPredictedBy(predictedById);
+  if (!predictions) {
+    return next(new AppError("No predictions are found for this user!", 404));
+  }
+  res.status(201).json({
+    status: "success",
+    data: predictions,
+    message: "fetched  successfully",
+  });
+});
+
+module.exports = {
+  makePrediction,
+  getPredictionsByStudent,
+  getPredictionsByPredictedBy,
+};
