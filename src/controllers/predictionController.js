@@ -2,17 +2,7 @@ const Prediction = require("../models/prediction");
 const AppError = require("../utils/error");
 const { asyncHandler } = require("../utils/asyncHandler");
 
-const remark = `I must commend you on your consistent attendance
-   throughout the academic year, with an impressive
-    90% class attendance! Your commitment to being present
-     and engaged in the learning process is commendable. 
-     However, I have noticed that your performance in the physics 
-     exam was not reflective of your attendance, with a score of 67%. 
-     To improve your results, I recommend dedicating extra time to review
-      and practice physics concepts, utilizing resources like textbooks, online 
-      tutorials, and seeking clarification from your teacher. By bridging this gap, 
-      I am confident you will excel in future exams. Keep up the good work and never
-   hesitate to ask for assistance when needed!`;
+const remark = `With an excellent attendance of 90%, it's notable that your physics exam score was 67%. To improve, consider seeking help, studying concepts thoroughly, and utilizing study resources such as textbooks, online tutorials, and guidance from your teacher. Strive for better results in future exams.`;
 
 const makePrediction = asyncHandler(async (req, res, next) => {
   const { studentId, subjectId, predictedById, previousExamMark, attendance } =
@@ -38,7 +28,7 @@ const makePrediction = asyncHandler(async (req, res, next) => {
   res.status(201).json({
     status: "success",
     data: newPrediction,
-    message: "Student added successfully",
+    message: "prediction made successfully",
   });
 });
 
