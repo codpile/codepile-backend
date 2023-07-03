@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const userRoutes = require("./routes/userRoutes");
 const studentRoutes = require("./routes/studentRoutes");
+const subjectRoutes = require("./routes/subjectRoutes");
 const { errorHandler } = require("./controllers/errorController");
 const logger = require("morgan");
 
@@ -22,6 +23,7 @@ app.use(logger("dev"));
 
 app.use("/api/users", userRoutes);
 app.use("/api/students", studentRoutes);
+app.use("/api/subjects", subjectRoutes);
 app.use(errorHandler);
 
 app.use("*", (req, res) => {
