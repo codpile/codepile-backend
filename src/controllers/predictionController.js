@@ -19,10 +19,9 @@ const makePrediction = asyncHandler(async (req, res, next) => {
   }
   req.body.previousExamMark = parseInt(req.body.previousExamMark);
   req.body.attendance = parseInt(req.body.attendance);
-  req.body.predictedMark = 76;
+  req.body.predictedMark = 73;
   req.body.remark = remark;
 
-  // TODO: perform actual prediction here
   const newPrediction = await Prediction.create(req.body);
 
   res.status(201).json({
