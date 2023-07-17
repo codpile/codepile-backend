@@ -31,8 +31,7 @@ app.use(errorHandler);
 app.use("*", (req, res) => {
   res.status(404).json({
     status: "error end point not found!",
-    // message: req.originalUrl,
-    message: "End-point not found",
+    message: req.originalUrl,
   });
 });
 
