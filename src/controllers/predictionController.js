@@ -1,6 +1,10 @@
 const Prediction = require("../models/prediction");
 const AppError = require("../utils/error");
 const { asyncHandler } = require("../utils/asyncHandler");
+const axios = require("axios");
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 const remark = `With an excellent attendance of 90%, it's notable that your physics exam score was 67%. To improve, consider seeking help, studying concepts thoroughly, and utilizing study resources such as textbooks, online tutorials, and guidance from your teacher. Strive for better results in future exams.`;
 
@@ -21,12 +25,32 @@ const makePrediction = asyncHandler(async (req, res, next) => {
   req.body.attendance = parseInt(req.body.attendance);
   req.body.predictedMark = 73;
   req.body.remark = remark;
+  // make db query to get students details
 
-  const newPrediction = await Prediction.create(req.body);
+  console.log("About send request to flask server");
+
+  // make request to our flask server
+  const response = await axios.post(
+    `${process.env.CODEPILE_MODEL}/api/v1/predict`,
+    {
+      age: 15,
+      gender: "female",
+      district: "Mbabarara",
+      regiion: "western",
+      language: "runyankole",
+      subject: "chemistry",
+      mark: 77,
+    }
+  );
+
+  console.log("response data");
+  console.log(response.data);
+
+  // const newPrediction = await Prediction.create(req.body);
 
   res.status(201).json({
     status: "success",
-    data: newPrediction,
+    data: "predicted",
     message: "prediction made successfully",
   });
 });
