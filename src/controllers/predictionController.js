@@ -1,5 +1,6 @@
 const Prediction = require("../models/prediction");
 const Student = require("../models/student");
+const Subject = require("../models/subject");
 const AppError = require("../utils/error");
 const { asyncHandler } = require("../utils/asyncHandler");
 const axios = require("axios");
@@ -7,11 +8,8 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
-const remark = `With an excellent attendance of 90%, it's notable that your physics exam score was 67%. To improve, consider seeking help, studying concepts thoroughly, and utilizing study resources such as textbooks, online tutorials, and guidance from your teacher. Strive for better results in future exams.`;
-
 const makePrediction = asyncHandler(async (req, res, next) => {
-  const { studentId, subjectId, predictedById, previousExamMark, attendance } =
-    req.body;
+  const { studentId, subjectId, predictedById, attendance } = req.body;
   if (!studentId) {
     return next(new AppError("Please provide a student id!", 400));
   }
@@ -19,22 +17,19 @@ const makePrediction = asyncHandler(async (req, res, next) => {
     return next(new AppError("Please provide a user id!", 400));
   }
   if (!subjectId) return next(new AppError("Please provide subject id!"));
-  if (!previousExamMark || !attendance) {
-    return next(new AppError("Please fill out all fields", 400));
+  if (!attendance) {
+    return next(new AppError("Please provide student's attendance", 400));
   }
-  req.body.previousExamMark = parseInt(req.body.previousExamMark);
+  req.body.previousExamMark = 1;
   req.body.attendance = parseInt(req.body.attendance);
-  req.body.predictedMark = 73;
-  req.body.remark = remark;
-  // make db query to get students details
+  req.body.remark = "good";
 
   const student = await Student.findById(studentId);
-  console.log("student");
-  console.log(student);
+  const subject = await Subject.findById(subjectId);
+  console.log("student", student);
+  console.log("subject", subject);
 
   console.log("About send request to flask server");
-
-  // make request to our flask server
   const response = await axios.post(
     `${process.env.CODEPILE_MODEL}/api/v1/predict`,
     {
@@ -42,17 +37,16 @@ const makePrediction = asyncHandler(async (req, res, next) => {
       gender: student.gender,
       district: student.district,
       region: student.region,
-      subject: req.body.subject,
+      subject: subject.subjectName,
       attendance: parseInt(req.body.attendance),
     }
   );
-
-  console.log("response data");
   console.log(response.data);
+  req.body.predictedMark = response.data.predicted_mark;
 
-  // save results to the database
-
-  // const newPrediction = await Prediction.create(req.body);
+  const newPrediction = await Prediction.create(req.body);
+  console.log("newPrediction");
+  console.log(newPrediction);
 
   res.status(201).json({
     status: "success",

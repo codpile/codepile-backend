@@ -55,10 +55,10 @@ const getAllStudents = asyncHandler(async (req, res, next) => {
 
 const updateStudent = asyncHandler(async (req, res, next) => {
   const studentId = req.params.studentId;
-  const { firstName, LastName, gender, age, district, region } = req.body;
+  const { firstName, lastName, gender, age, district, region } = req.body;
 
   if (!studentId) return next(new AppError("Please provide a student id", 400));
-  if (!firstName || !LastName || !gender || !age || !district || !region) {
+  if (!firstName || !lastName || !gender || !age || !district || !region) {
     return next(new AppError("Please fill out all fields", 400));
   }
   const updatedStudent = await Student.update(studentId, req.body);
