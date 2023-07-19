@@ -27,4 +27,22 @@ const getAllSubjects = asyncHandler(async (req, res, next) => {
   });
 });
 
-module.exports = { addSubject, getAllSubjects };
+const updateSubject = asyncHandler(async (req, res, next) => {
+  console.log(req.body);
+  const subjectId = req.params.subjectId;
+  const subjectName = req.body.subjectName;
+  if (!subjectId) {
+    return next(new AppError("Please provide subjectId", 400));
+  }
+  if (!subjectName) {
+    return next(new AppError("Please provide subject name", 400));
+  }
+  const updatedSubject = await Subject.update(subjectId, req.body);
+  res.status(200).json({
+    status: "success",
+    message: "subject updated successfully",
+    data: updatedSubject,
+  });
+});
+
+module.exports = { addSubject, getAllSubjects, updateSubject };

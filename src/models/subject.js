@@ -29,4 +29,20 @@ Subject.findAll = async () => {
   return await subject.findMany({});
 };
 
+Subject.update = async (subjectId, subjectObj) => {
+  return await subject.update({
+    where: {
+      subjectId: subjectId,
+    },
+    data: subjectObj,
+    select: {
+      subjectIndex: true,
+      subjectId: true,
+      subjectName: true,
+      createdAt: true,
+      updateAt: true,
+    },
+  });
+};
+
 module.exports = Subject;

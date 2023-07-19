@@ -15,7 +15,9 @@ const protect = asyncHandler(async (req, res, next) => {
   const decoded = jwt.verify(token, process.env.JWT_SECRETE_TOKEN);
   const user = await User.findUserById(decoded.userId);
   if (!user) {
-    return next(new AppError("The user belonging to this token no exists!"));
+    return next(
+      new AppError("The user belonging to this token no longer exists!")
+    );
   }
   // req.id = decoded.userId;
   // next();

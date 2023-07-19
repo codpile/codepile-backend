@@ -67,10 +67,10 @@ model Prediction {
   studentId        String    @db.VarChar(255)
   subject          Subject   @relation(fields: [subjectId], references: [subjectId])
   subjectId        String    @db.VarChar(255)
-  previousExamMark Int
+  previousExamMark Int?
   predictedMark    Int
   attendance       Int
-  remark           String    @db.VarChar(1500)
+  remark           String?    @db.VarChar(1500)
   createdAt        DateTime  @default(now())
   updateAt         DateTime? @updatedAt
 

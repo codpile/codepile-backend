@@ -1,4 +1,5 @@
 const Prediction = require("../models/prediction");
+const Student = require("../models/student");
 const AppError = require("../utils/error");
 const { asyncHandler } = require("../utils/asyncHandler");
 const axios = require("axios");
@@ -27,30 +28,35 @@ const makePrediction = asyncHandler(async (req, res, next) => {
   req.body.remark = remark;
   // make db query to get students details
 
+  const student = await Student.findById(studentId);
+  console.log("student");
+  console.log(student);
+
   console.log("About send request to flask server");
 
   // make request to our flask server
   const response = await axios.post(
     `${process.env.CODEPILE_MODEL}/api/v1/predict`,
     {
-      age: 15,
-      gender: "female",
-      district: "Mbabarara",
-      regiion: "western",
-      language: "runyankole",
-      subject: "chemistry",
-      mark: 77,
+      age: student.age,
+      gender: student.gender,
+      district: student.district,
+      region: student.region,
+      subject: req.body.subject,
+      attendance: parseInt(req.body.attendance),
     }
   );
 
   console.log("response data");
   console.log(response.data);
 
+  // save results to the database
+
   // const newPrediction = await Prediction.create(req.body);
 
   res.status(201).json({
     status: "success",
-    data: "predicted",
+    data: response.data,
     message: "prediction made successfully",
   });
 });
