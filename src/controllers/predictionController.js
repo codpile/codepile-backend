@@ -8,6 +8,21 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
+function formatToFloat(num) {
+  const value = parseFloat(num);
+  if (!Number.isFinite(value)) {
+    throw new Error("Invalid number");
+  }
+  const formattedNumber = value.toFixed(2);
+  const result = "0." + formattedNumber;
+  return result;
+}
+
+// Example usage
+const numberString = "50";
+const formattedString = formatToFloat(numberString);
+console.log(formattedString); // Output: "0.50"
+
 const makePrediction = asyncHandler(async (req, res, next) => {
   const { studentId, subjectId, predictedById, attendance } = req.body;
   if (!studentId) {
@@ -21,7 +36,8 @@ const makePrediction = asyncHandler(async (req, res, next) => {
     return next(new AppError("Please provide student's attendance", 400));
   }
   req.body.previousExamMark = 1;
-  req.body.attendance = parseInt(req.body.attendance);
+  // req.body.attendance = parseInt(req.body.attendance);
+  // req.body.attendance = formatToFloat(req.body.attendance);
   req.body.remark = "good";
 
   const student = await Student.findById(studentId);
@@ -38,11 +54,12 @@ const makePrediction = asyncHandler(async (req, res, next) => {
       district: student.district,
       region: student.region,
       subject: subject.subjectName,
-      attendance: parseInt(req.body.attendance),
+      attendance: parseInt(req.body.attendance) / 100,
     }
   );
   console.log(response.data);
   req.body.predictedMark = response.data.predicted_mark;
+  req.body.attendance = parseInt(req.body.attendance);
 
   const newPrediction = await Prediction.create(req.body);
   console.log("newPrediction");
